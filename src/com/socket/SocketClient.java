@@ -5,6 +5,7 @@ import com.ui.ChatFrame;
 import com.ui.Login;
 import java.io.*;
 import java.net.*;
+import java.security.PrivateKey;
 import java.util.Date;
 import java.util.Locale;
 import javax.swing.JFileChooser;
@@ -53,17 +54,23 @@ public class SocketClient implements Runnable{
         while(keepRunning){
             try {
                 Message msg = (Message) In.readObject();
-             /*   
+               
                 if(!(msg.type.equals("upload_req") || msg.type.equals("signup") || msg.type.equals("signout") ||
                        msg.type.equals("test") || msg.type.equals("login") || msg.type.equals("newuser")) ) {
                     System.out.println("Incoming prev decrypt : "+msg.toString());                  
                     System.out.println("check filePrivateKey: " + ui.filePrivateKey);
-                    String pr = FileUtil.readFile(ui.filePrivateKey);
-                    System.out.println("private key : "+pr);
-                    String txt = EncryptionUtil.cipherTxt2PlainTxt(msg.content, pr);
-                    msg.content = txt;
+                    String privKey = FileUtil.readFile(ui.filePrivateKey);
+                    System.out.println("private key : "+privKey);
+                    
+                    // 
+                    PrivateKey privSaved = CipherUtil.loadPrivateKey(privKey);
+                    final byte[] plainBytes = decrypt(msg.cipherBytes, privSaved);
+                    
+                    //String txt = EncryptionUtil.cipherTxt2PlainTxt(msg.content, privKey);
+                    msg.content = new String(plainBytes);
+                    System.out.println("plain content: " + new String(plainBytes));
                 }
-               */ 
+                
                 
                 System.out.println("Incoming : "+msg.toString());
                 
