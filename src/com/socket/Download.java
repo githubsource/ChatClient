@@ -59,20 +59,20 @@ public class Download implements Runnable{
             }
             
             // decrypt
-           /*
-            String pr = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAKrF6jX3gSRlrYYerDvwDud6s/Eu\n" +
-"oSvqGfg7uwJx2gh3RnB9eb9MKhG4MQa0bXEp7Y84mRoyZPxXoRBtWS2R+PaqKelpGdwiMAgbavAf\n" +
-"caDeqFxXkLFYd4ucgK++l8fBybIYg7yMagafEza/IQ/cD5GN2UxQdbCOSTaym4ECkLBVAgMBAAEC\n" +
-"gYB4W2aXRGnrKhIjHYkL8UO/1xXtHI0Q8zv8XLSPo4gkQVQOwhBFR7u6o1NCQ3WCtSctspkNAolz\n" +
-"45qrhjW8zU1l+cHjKzdt3URLtIX3VLPS44KtlCiPmTfWOXNhIKNHs8ulqYD7AE9pUJAVZsmyuqgl\n" +
-"QzIMlK+bBhIHtzkmnEbL3QJBAO/nsEiXBu4qRFsxkKreeynG8pU5mjdDcTZ/etGyjkIij3/LYo7r\n" +
-"nnwvHIgqXzOkJfhzswxQqQR7uRjmZfrUZRcCQQC2Oubo5+vI6fPr2FB7ROr+W+8VZJlAO7dK2r6Y\n" +
-"FSjJqiznmL17JO5/E4jrkyJA/iPq+d2qvs/OJXNOg4pZDVFzAkEA2HDIe4U+bGtXxoq+QVp99eAX\n" +
-"Bgi1GLzRDGEQ9tXIQOSbYKmnHth24QVEEZlg0N98nl4MIMU45+GTymI7iYRMOwJAfgvB+mmo0sDY\n" +
-"QlLOYGVsMeI/PknmIuLrRnCFksZX/x2hj9Q7g/koqmdFtsR/1fqzt217YQY40LtgxXcA89XddwJB\n" +
-"AMnRRPtwlMN7wgDkPa80Y4Uex/k24ueT0F+/6vu0x1OYibcugMaHtm26aRp7CxV/rAgIZdYqcd7r\n" +
-"0FKoFYgMcas=";
-                   */
+         /*  
+            String pr = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAJMsiaf9SKRqTP08SIbQ/Wi718oH\n"+
+"PiYI4h5zHXdsRG6rRGvnm+XhxGObSq165tSxdLfD5O0TUWuS1/XsTddYA1JaT58D8zfpFS6zFCOn\n" +
+"GafkCTpP2MtI4lZc+zuueIJqSZVGrXn8frE+akoXHr3N2csoulvNIL+gcj73jjVIxbJ/AgMBAAEC\n" +
+"gYEAj6n8PhYLISP7P3/nNGMx21jyTm4/hpVJVXv9maQAMR/STJrsHb0DHlBq12mPhrQrQW9iOuKO\n" +
+"qjnPwmoHmlx58CDOktzvSZahIyjdu7Jfh3yAUv7xFAwT4ITLsYVZ37t4cAw8v++MW0c1dWiaPh5G\n" +
+"n24zDpGs5WGTHtW/v+YnnqECQQDHPYLcn5TZXLIBclzNlugY/SE2fyfrTQkvU9R1zRL5y3YlxdPu\n" +
+"NkdDaRY34L30t7OYy/GXbXs66BGQ/jIdIuZpAkEAvRnbwuzhkS+0UQNbr4lqnUseHrhUIwH5qWY7\n" +
+"QV0WT1GJk7t6X3NfRBA8/tkyEQZgwbWnGoPuhRYpG39qQLHEpwJANH8sn90cZzlZXbA4a6M7fHoV\n" +
+"6joO1pzxspqv/GoQeej2NHWvpbB/jm99/zMkWfqdQ8FY4sFiGt9S4ZVYtvyfIQJBAJgkTeOuom0l\n" +
+"bHYhtYqtjNGwtjMRKuBfnnbkgZg9RM3cVEw/8l0JfgRM7EY+iUGZWA+CD0gODcGV6szs3pfebtEC\n" +
+"QC6jXEIMZWvyA9hv2723g6rHqb5ItHfnzIo7jCnUtzknADogAjHRZAtnDHQIvaW6mJGJZOusUMgc\n" +
+"BsVAO9TMJTw=";
+                */   
             String pr = FileUtil.readFile(ui.filePrivateKey);
             final byte[] plainBytes = decrypt(combined, CipherUtil.loadPrivateKey(pr));
             

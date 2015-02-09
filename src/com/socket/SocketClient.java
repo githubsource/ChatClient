@@ -53,8 +53,8 @@ public class SocketClient implements Runnable{
         while(keepRunning){
             try {
                 Message msg = (Message) In.readObject();
-                
-                if(!(msg.type.equals("signup") || msg.type.equals("signout") ||
+             /*   
+                if(!(msg.type.equals("upload_req") || msg.type.equals("signup") || msg.type.equals("signout") ||
                        msg.type.equals("test") || msg.type.equals("login") || msg.type.equals("newuser")) ) {
                     System.out.println("Incoming prev decrypt : "+msg.toString());                  
                     System.out.println("check filePrivateKey: " + ui.filePrivateKey);
@@ -63,7 +63,7 @@ public class SocketClient implements Runnable{
                     String txt = EncryptionUtil.cipherTxt2PlainTxt(msg.content, pr);
                     msg.content = txt;
                 }
-                
+               */ 
                 
                 System.out.println("Incoming : "+msg.toString());
                 
