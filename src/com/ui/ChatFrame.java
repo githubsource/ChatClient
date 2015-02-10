@@ -26,7 +26,7 @@ public class ChatFrame extends javax.swing.JFrame {
         
         initComponents();
         this.setTitle("jMessenger");
-        model.addElement("All");
+       // model.addElement("All");
         jList1.setSelectedIndex(0);
         
         
