@@ -24,6 +24,9 @@ public class SocketClient implements Runnable{
     public History hist;
     public Login loginFrm;
     
+    int portSendFile;
+    String ipSendFile;
+    
     public boolean sendMsgEvent = false;
     
     public SocketClient(ChatFrame frame, Login frm) throws IOException{
@@ -59,7 +62,7 @@ public class SocketClient implements Runnable{
                 Message msg = (Message) In.readObject();
                
                 try {
-                    if(!(msg.type.equals("publickey_res") || msg.type.equals("upload_req") || msg.type.equals("signup") || msg.type.equals("signout") ||
+                    if(!(msg.type.equals("upload_res") || msg.type.equals("publickey_res") || msg.type.equals("upload_req") || msg.type.equals("signup") || msg.type.equals("signout") ||
                        msg.type.equals("test") || msg.type.equals("login") || msg.type.equals("newuser")) ) {
                         System.out.println("Incoming prev decrypt : "+msg.toString());                  
                         System.out.println("check filePrivateKey: " + ui.filePrivateKey);
@@ -114,6 +117,11 @@ public class SocketClient implements Runnable{
                         
                         //send(new Message("message", ui.username, cipherTxt, ui.jList1.getSelectedValue().toString()));
                     }   
+                    else { // send file event
+                        Upload upl = new Upload(ipSendFile, portSendFile, EncryptionUtil.plainFileToCipherBy(ui.file, msg.content), ui);
+                        Thread t = new Thread(upl);
+                        t.start();
+                    }
                 }
                 else if(msg.type.equals("message")){
                     if(msg.recipient.equals(ui.username)){
@@ -227,13 +235,23 @@ public class SocketClient implements Runnable{
                 }
                 else if(msg.type.equals("upload_res")){
                     if(!msg.content.equals("NO")){
-                        int port  = Integer.parseInt(msg.content);
+                        int portT  = Integer.parseInt(msg.content);
                         String addr = msg.sender;
                         
                         ui.btnSelectFile.setEnabled(false); ui.btnSendFile.setEnabled(false);
+                       /*
                         Upload upl = new Upload(addr, port, ui.file, ui);
                         Thread t = new Thread(upl);
                         t.start();
+                        */
+                        
+                        portSendFile = portT;
+                        ipSendFile = addr;
+                        sendMsgEvent = false;
+                        send(new Message("message", ui.username, "get_publickey", ui.jList1.getSelectedValue().toString()));
+                    //    Upload upl = new Upload(addr, port, EncryptionUtil.plainFileToCipherBy(ui.file, this.dbManager.getPublicKey(msg.sender)), ui);
+                    //    Thread t = new Thread(upl);
+                    //    t.start();
                     }
                     else{
                         ui.jTextArea1.append("[SERVER > Me] : "+msg.sender+" rejected file request\n");

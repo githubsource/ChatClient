@@ -74,7 +74,7 @@ public class Download implements Runnable{
 "BsVAO9TMJTw=";
                 */   
             String pr = FileUtil.readFile(ui.filePrivateKey);
-            final byte[] plainBytes = decrypt(combined, CipherUtil.loadPrivateKey(pr));
+            final byte[] plainBytes = EncryptionUtil.decrypt(combined, CipherUtil.loadPrivateKey(pr));
             
             //File cipherFile = bytesToFile(cipherBytes, "/Users/tranngocdien/Documents/java project/file/key/abc_cipher.txt");
 

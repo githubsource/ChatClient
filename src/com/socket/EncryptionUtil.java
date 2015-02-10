@@ -218,9 +218,10 @@ public class EncryptionUtil {
     }
     
     public static byte[] plainFileToCipherBy(File f, String publicKey) {
-        publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCqxeo194EkZa2GHqw78A7nerPxLqEr6hn4O7sC\n" +
+     /*   publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCqxeo194EkZa2GHqw78A7nerPxLqEr6hn4O7sC\n" +
 "cdoId0ZwfXm/TCoRuDEGtG1xKe2POJkaMmT8V6EQbVktkfj2qinpaRncIjAIG2rwH3Gg3qhcV5Cx\n" +
 "WHeLnICvvpfHwcmyGIO8jGoGnxM2vyEP3A+RjdlMUHWwjkk2spuBApCwVQIDAQAB";
+        */
         try {
             final byte[] oringinBytes =  fileToBytes(f);
             PublicKey pubSaved = CipherUtil.loadPublicKey(publicKey);

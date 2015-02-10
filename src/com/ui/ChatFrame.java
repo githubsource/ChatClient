@@ -358,13 +358,33 @@ public class ChatFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void btnSendFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendFileActionPerformed
-            long size = file.length();
+           
+        long size = file.length();
             if(size < 120 * 1024 * 1024){
                 client.send(new Message("upload_req", username, file.getName(), jList1.getSelectedValue().toString()));
             }
             else{
                 jTextArea1.append("[Application > Me] : File is size too large\n");
             }
+                
+        /*
+        String target = jList1.getSelectedValue().toString();
+        if(target.isEmpty()) return;
+        
+        long size = file.length();
+        if(size < 120 * 1024 * 1024){ 
+            if(target.equals("All")) {
+               // server.Announce("upload_req", "SERVER", file.getName());
+            } else {
+                client.send(new Message("upload_req_from_user", "SERVER, file.getName(), target));
+            }           
+            
+           // client.send(new Message("upload_req", "SERVER", file.getName(), jList1.getSelectedValue().toString()));
+        }
+        else{
+            jTextArea1.append("[Application > Me] : File is size too large\n");
+        }
+        */
     }//GEN-LAST:event_btnSendFileActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed

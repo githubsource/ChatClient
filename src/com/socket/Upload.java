@@ -15,6 +15,7 @@ public class Upload implements Runnable{
     public OutputStream Out;
     public File file;
     public ChatFrame ui;
+    byte[] bytes;
     
     public Upload(String addr, int port, File filepath, ChatFrame frame){
         super();
@@ -29,20 +30,44 @@ public class Upload implements Runnable{
         }
     }
     
+    public Upload(String addr, int port, byte[] bytes, ChatFrame frame){
+        super();
+        try {
+             ui = frame;
+            socket = new Socket(InetAddress.getByName(addr), port);
+            Out = socket.getOutputStream();
+            this.bytes = bytes;
+            //In = new FileInputStream(filepath);
+        } 
+        catch (Exception ex) {
+            System.out.println("Exception [Upload : Upload(...)]");
+        }
+    }
+    
     @Override
     public void run() {
         try {       
             byte[] buffer = new byte[1024];
-            int count;
+            int count;        
             
+            //while((count = In.read(buffer)) >= 0){
+            //    Out.write(buffer, 0, count);
+            //}
+            Out.write(bytes, 0, bytes.length);
+            Out.flush();
+            
+           // ui.jTextArea1.append("[Applcation > SERVER] : File upload complete\n");
+           // ui.btnFileSelect.setEnabled(true); ui.btnSendFile.setEnabled(true);
+          //  ui.txtFilePath.setVisible(true);
+            /*
             while((count = In.read(buffer)) >= 0){
                 Out.write(buffer, 0, count);
             }
             Out.flush();
-            
+            */
             ui.jTextArea1.append("[Applcation > Me] : File upload complete\n");
             ui.btnSelectFile.setEnabled(true); ui.btnSendFile.setEnabled(true);
-            ui.txtFile.setVisible(true);
+            //ui.txtFile.setVisible(true);
             
             if(In != null){ In.close(); }
             if(Out != null){ Out.close(); }
