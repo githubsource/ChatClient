@@ -6,6 +6,7 @@ import com.ui.Login;
 import java.io.*;
 import java.net.*;
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.Date;
 import java.util.Locale;
 import javax.swing.JFileChooser;
@@ -22,6 +23,8 @@ public class SocketClient implements Runnable{
     public ObjectOutputStream Out;
     public History hist;
     public Login loginFrm;
+    
+    public boolean sendMsgEvent = false;
     
     public SocketClient(ChatFrame frame, Login frm) throws IOException{
         this.loginFrm = frm;
@@ -55,26 +58,64 @@ public class SocketClient implements Runnable{
             try {
                 Message msg = (Message) In.readObject();
                
-                if(!(msg.type.equals("upload_req") || msg.type.equals("signup") || msg.type.equals("signout") ||
+                try {
+                    if(!(msg.type.equals("publickey_res") || msg.type.equals("upload_req") || msg.type.equals("signup") || msg.type.equals("signout") ||
                        msg.type.equals("test") || msg.type.equals("login") || msg.type.equals("newuser")) ) {
-                    System.out.println("Incoming prev decrypt : "+msg.toString());                  
-                    System.out.println("check filePrivateKey: " + ui.filePrivateKey);
-                    String privKey = FileUtil.readFile(ui.filePrivateKey);
-                    System.out.println("private key : "+privKey);
-                    
-                    // 
-                    PrivateKey privSaved = CipherUtil.loadPrivateKey(privKey);
-                    final byte[] plainBytes = decrypt(msg.cipherBytes, privSaved);
-                    
-                    //String txt = EncryptionUtil.cipherTxt2PlainTxt(msg.content, privKey);
-                    msg.content = new String(plainBytes);
-                    System.out.println("plain content: " + new String(plainBytes));
+                        System.out.println("Incoming prev decrypt : "+msg.toString());                  
+                        System.out.println("check filePrivateKey: " + ui.filePrivateKey);
+                        String privKey = FileUtil.readFile(ui.filePrivateKey);
+                        System.out.println("private key : "+privKey);
+
+                        // 
+                        PrivateKey privSaved = CipherUtil.loadPrivateKey(privKey);
+                        final byte[] plainBytes = EncryptionUtil.decrypt(msg.cipherBytes, privSaved);
+
+                        //System.out.println("plain: " +new String(decrypt(msg.content.getBytes(), privSaved)));
+                        //String txt = EncryptionUtil.cipherTxt2PlainTxt(msg.content, privKey);
+                        msg.content = new String(plainBytes);
+                        System.out.println("plain content: " + new String(plainBytes));
+                    }
+                } catch (Exception e) {
+                    System.out.println("Decrypt error " + e);
                 }
-                
-                
+      
                 System.out.println("Incoming : "+msg.toString());
+                if(msg.type.equals("publickey_res")){
+                    if(sendMsgEvent) {
+                        String sendTxt = ui.txtMsg.getText();
+                        ui.txtMsg.setText("");             
+                        sendMsgEvent = false;
+                        try {
+                            // encrypt
+                        PublicKey pubSaved = CipherUtil.loadPublicKey(msg.content);
+                        String cipherTxt = EncryptionUtil.plainTxt2CipherTxt(sendTxt, msg.content);
                 
-                if(msg.type.equals("message")){
+                        msg.cipherBytes = EncryptionUtil.encrypt(sendTxt.getBytes(), pubSaved);
+                        
+                        // test
+                        /*
+                        String privKey = FileUtil.readFile(ui.filePrivateKey);
+                        System.out.println("private key : "+privKey);
+
+                        PrivateKey privSaved = CipherUtil.loadPrivateKey(privKey);
+                        final byte[] plainBytes = EncryptionUtil.decrypt(msg.cipherBytes, privSaved);
+                        System.out.println("test current : "+ new String(plainBytes));
+                        */
+                        // end test
+                        
+                        msg.content = cipherTxt; 
+                        msg.sender = ui.username;
+                        msg.type = "message";
+                        msg.recipient = ui.jList1.getSelectedValue().toString();
+                        send(msg);
+                        ui.jTextArea1.append("["+ msg.sender +" > "+ msg.recipient +"] : " + sendTxt + "\n");
+                        } catch (Exception e) {
+                        }
+                        
+                        //send(new Message("message", ui.username, cipherTxt, ui.jList1.getSelectedValue().toString()));
+                    }   
+                }
+                else if(msg.type.equals("message")){
                     if(msg.recipient.equals(ui.username)){
                         ui.jTextArea1.append("["+msg.sender +" > Me] : " + msg.content + "\n");
                     }
@@ -83,7 +124,7 @@ public class SocketClient implements Runnable{
                     }
                                             
                     if(!msg.content.equals(".bye") && !msg.sender.equals(ui.username)){
-                        String msgTime = (new Date()).toString();
+                        //String msgTime = (new Date()).toString();
                         /*
                         try{
                             hist.addMessage(msg, msgTime);

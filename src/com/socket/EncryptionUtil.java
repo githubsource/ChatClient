@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.security.GeneralSecurityException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -313,5 +314,13 @@ public class EncryptionUtil {
         }
         
         return cipherTxt;
+    }
+    
+       public static String plainTxt2CipherTxt(String text, String publicKey) throws IOException, GeneralSecurityException {
+        String ret = "";
+        
+        PublicKey pubSaved = CipherUtil.loadPublicKey(publicKey);
+        final byte[] cipherText = encrypt(text.getBytes(), pubSaved);
+        return cipherText.toString();
     }
 }

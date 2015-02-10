@@ -341,8 +341,10 @@ public class ChatFrame extends javax.swing.JFrame {
         String target = jList1.getSelectedValue().toString();
         
         if(!msg.isEmpty() && !target.isEmpty()){
-            txtMsg.setText("");
-            client.send(new Message("message", username, msg, target));
+            //txtMsg.setText("");
+            //client.send(new Message("message", username, msg, target));
+            client.sendMsgEvent = true;
+            client.send(new Message("message", username, "get_publickey", target));
         }
     }//GEN-LAST:event_btnSendActionPerformed
 
