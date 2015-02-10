@@ -21,7 +21,7 @@ public class SocketClient implements Runnable{
     public ChatFrame ui;
     public ObjectInputStream In;
     public ObjectOutputStream Out;
-    public History hist;
+
     public Login loginFrm;
     
     int portSendFile;
@@ -38,18 +38,18 @@ public class SocketClient implements Runnable{
         Out.flush();
         In = new ObjectInputStream(socket.getInputStream());
         
-        hist = ui.hist;
+       
     }
 
     public SocketClient(int port, String serverAddr, Socket socket, ChatFrame ui, 
-            ObjectInputStream In, ObjectOutputStream Out, History hist) {
+            ObjectInputStream In, ObjectOutputStream Out) {
         this.port = port;
         this.serverAddr = serverAddr;
         this.socket = socket;
         this.ui = ui;
         this.In = In;
         this.Out = Out;
-        this.hist = hist;
+      
     }
     
    
@@ -145,13 +145,11 @@ public class SocketClient implements Runnable{
                 }
                 else if(msg.type.equals("login")){
                     if(msg.content.equals("TRUE")){
-                        ui.txtLogin.setEnabled(false); ui.jButton3.setEnabled(false);                        
+                                         
                         ui.btnSend.setEnabled(true); ui.btnSelectFile.setEnabled(true);
                         ui.jTextArea1.append("[SERVER > Me] : Login Successful\n");
-                        ui.txtUsername.setEnabled(false); ui.txtPassword.setEnabled(false);
-                        
+
                         //ui.setVisible(true);
-                        
                         //
                         ui.setLocation(loginFrm.getLocation());
                         ui.setVisible(true);
@@ -165,11 +163,7 @@ public class SocketClient implements Runnable{
                     }
                 }
                 else if(msg.type.equals("test")){
-                    ui.btnConnect.setEnabled(false);
-                    ui.txtLogin.setEnabled(true); ui.jButton3.setEnabled(true);
-                    ui.txtUsername.setEnabled(true); ui.txtPassword.setEnabled(true);
-                    ui.txtServerAddress.setEditable(false); ui.txtPort.setEditable(false);
-                    ui.jButton7.setEnabled(true);
+                 
                 }
                 else if(msg.type.equals("newuser")){
                     if(!msg.content.equals(ui.username)){
@@ -184,7 +178,7 @@ public class SocketClient implements Runnable{
                 }
                 else if(msg.type.equals("signup")){
                     if(msg.content.equals("TRUE")){
-                        ui.txtLogin.setEnabled(false); ui.jButton3.setEnabled(false);
+                       
                         ui.btnSend.setEnabled(true); ui.btnSelectFile.setEnabled(true);
                         ui.jTextArea1.append("[SERVER > Me] : Singup Successful\n");
                     }
@@ -195,8 +189,7 @@ public class SocketClient implements Runnable{
                 else if(msg.type.equals("signout")){
                     if(msg.content.equals(ui.username)){
                         ui.jTextArea1.append("["+ msg.sender +" > Me] : Bye\n");
-                        ui.btnConnect.setEnabled(true); ui.btnSend.setEnabled(false); 
-                        ui.txtServerAddress.setEditable(true); ui.txtPort.setEditable(true);
+                        
                         
                         for(int i = 1; i < ui.model.size(); i++){
                             ui.model.removeElementAt(i);
@@ -264,7 +257,6 @@ public class SocketClient implements Runnable{
             catch(Exception ex) {
                 keepRunning = false;
                 ui.jTextArea1.append("[Application > Me] : Connection Failure\n");
-                ui.btnConnect.setEnabled(true); ui.txtServerAddress.setEditable(true); ui.txtPort.setEditable(true);
                 ui.btnSend.setEnabled(false); ui.btnSelectFile.setEnabled(false); ui.btnSelectFile.setEnabled(false);
                 
                 for(int i = 1; i < ui.model.size(); i++){

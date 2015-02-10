@@ -1,6 +1,6 @@
 package com.ui;
 
-import com.socket.History;
+
 import com.socket.Message;
 import com.socket.SocketClient;
 import java.awt.event.WindowEvent;
@@ -19,9 +19,7 @@ public class ChatFrame extends javax.swing.JFrame {
     public Thread clientThread;
     public DefaultListModel model;
     public File file;
-    public String historyFile = "D:/History.xml";
-    public HistoryFrame historyFrame;
-    public History hist;
+
     public File filePrivateKey;
     
     public ChatFrame() {
@@ -31,7 +29,6 @@ public class ChatFrame extends javax.swing.JFrame {
         model.addElement("All");
         jList1.setSelectedIndex(0);
         
-        jTextField6.setEditable(false);
         
         this.addWindowListener(new WindowListener() {
 
@@ -44,7 +41,7 @@ public class ChatFrame extends javax.swing.JFrame {
             @Override public void windowDeactivated(WindowEvent e) {}
         });
         
-        hist = new History(historyFile);
+       
     }
     
     public boolean isWin32(){
@@ -56,15 +53,6 @@ public class ChatFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        txtServerAddress = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        txtPort = new javax.swing.JTextField();
-        btnConnect = new javax.swing.JButton();
-        txtUsername = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
-        txtPassword = new javax.swing.JPasswordField();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
@@ -73,58 +61,17 @@ public class ChatFrame extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         txtMsg = new javax.swing.JTextField();
         btnSend = new javax.swing.JButton();
-        txtLogin = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
         txtFile = new javax.swing.JTextField();
         btnSelectFile = new javax.swing.JButton();
         btnSendFile = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
         txtPrivateKeyPath = new javax.swing.JTextField();
         btnPrivateKeySelect = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Host Address : ");
-
-        txtServerAddress.setText("localhost");
-
-        jLabel2.setText("Host Port : ");
-
-        txtPort.setText("13000");
-        txtPort.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPortActionPerformed(evt);
-            }
-        });
-
-        btnConnect.setText("Connect");
-        btnConnect.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnConnectActionPerformed(evt);
-            }
-        });
-
-        txtUsername.setText("Anurag");
-        txtUsername.setEnabled(false);
-
-        jLabel3.setText("Password :");
-
-        jLabel4.setText("Username :");
-
-        jButton3.setText("SignUp");
-        jButton3.setEnabled(false);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
-        txtPassword.setText("password");
-        txtPassword.setEnabled(false);
+        jLabel1.setText("Chat Application");
 
         jTextArea1.setColumns(20);
         jTextArea1.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
@@ -141,14 +88,6 @@ public class ChatFrame extends javax.swing.JFrame {
         btnSend.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSendActionPerformed(evt);
-            }
-        });
-
-        txtLogin.setText("Login");
-        txtLogin.setEnabled(false);
-        txtLogin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtLoginActionPerformed(evt);
             }
         });
 
@@ -170,24 +109,6 @@ public class ChatFrame extends javax.swing.JFrame {
 
         jLabel6.setText("File :");
 
-        jLabel7.setText("History File :");
-
-        jButton7.setText("...");
-        jButton7.setEnabled(false);
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
-            }
-        });
-
-        jButton8.setText("Show");
-        jButton8.setEnabled(false);
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
-            }
-        });
-
         btnPrivateKeySelect.setText("private key");
         btnPrivateKeySelect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -205,38 +126,16 @@ public class ChatFrame extends javax.swing.JFrame {
                     .addComponent(jSeparator2)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel7))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField6)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtUsername)
-                                    .addComponent(txtServerAddress))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtPort)
-                                    .addComponent(txtPassword)))
-                            .addComponent(txtPrivateKeyPath))
+                                .addComponent(jLabel1)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(25, 25, 25)
+                                .addComponent(txtPrivateKeyPath)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnConnect, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 81, Short.MAX_VALUE)))
-                            .addComponent(btnPrivateKeySelect)))
+                        .addComponent(btnPrivateKeySelect)
+                        .addGap(44, 44, 44))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jScrollPane1)
                         .addGap(18, 18, 18)
@@ -262,79 +161,39 @@ public class ChatFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtServerAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnConnect))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jButton3)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtLogin))
-                .addGap(13, 13, 13)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtPrivateKeyPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnPrivateKeySelect))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton7)
-                    .addComponent(jButton8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSend)
-                    .addComponent(jLabel5)
-                    .addComponent(txtMsg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
-                    .addComponent(btnSendFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnSelectFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnSend)
+                            .addComponent(jLabel5)
+                            .addComponent(txtMsg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
+                            .addComponent(btnSendFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnSelectFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel6)
+                            .addComponent(txtFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnPrivateKeySelect)
+                            .addComponent(txtPrivateKeyPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(413, Short.MAX_VALUE))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnectActionPerformed
-        serverAddr = txtServerAddress.getText(); port = Integer.parseInt(txtPort.getText());
-        
-        if(!serverAddr.isEmpty() && !txtPort.getText().isEmpty()){
-            try{
-                client = new SocketClient(this, null);
-                clientThread = new Thread(client);
-                clientThread.start();
-                client.send(new Message("test", "testUser", "testContent", "SERVER"));
-            }
-            catch(Exception ex){
-                jTextArea1.append("[Application > Me] : Server not found\n");
-            }
-        }
-    }//GEN-LAST:event_btnConnectActionPerformed
-
-    private void txtLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLoginActionPerformed
-        username = txtUsername.getText();
-        password = txtPassword.getText();
-        
-        if(!username.isEmpty() && !password.isEmpty()){
-            client.send(new Message("login", username, password, "SERVER"));
-        }
-    }//GEN-LAST:event_txtLoginActionPerformed
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
         String msg = txtMsg.getText();
@@ -347,15 +206,6 @@ public class ChatFrame extends javax.swing.JFrame {
             client.send(new Message("message", username, "get_publickey", target));
         }
     }//GEN-LAST:event_btnSendActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        username = txtUsername.getText();
-        password = txtPassword.getText();
-        
-        if(!username.isEmpty() && !password.isEmpty()){
-            client.send(new Message("signup", username, password, "SERVER"));
-        }
-    }//GEN-LAST:event_jButton3ActionPerformed
 
     private void btnSendFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendFileActionPerformed
            
@@ -387,32 +237,6 @@ public class ChatFrame extends javax.swing.JFrame {
         */
     }//GEN-LAST:event_btnSendFileActionPerformed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        JFileChooser jf = new JFileChooser();
-        jf.showDialog(this, "Select File");
-        
-        if(!jf.getSelectedFile().getPath().isEmpty()){
-            historyFile = jf.getSelectedFile().getPath();
-            if(this.isWin32()){
-                historyFile = historyFile.replace("/", "\\");
-            }
-            jTextField6.setText(historyFile);
-            jTextField6.setEditable(false);
-            jButton7.setEnabled(false);
-            jButton8.setEnabled(true);
-            hist = new History(historyFile);
-                    
-            historyFrame = new HistoryFrame(hist);
-            historyFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-            historyFrame.setVisible(false);
-        }
-    }//GEN-LAST:event_jButton7ActionPerformed
-
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        historyFrame.setLocation(this.getLocation());
-        historyFrame.setVisible(true);
-    }//GEN-LAST:event_jButton8ActionPerformed
-
     private void btnSelectFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectFileActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.showDialog(this, "Select File");
@@ -433,10 +257,6 @@ public class ChatFrame extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnSelectFileActionPerformed
-
-    private void txtPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPortActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPortActionPerformed
 
     private void btnPrivateKeySelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrivateKeySelectActionPerformed
         // TODO add your handling code here:
@@ -477,35 +297,21 @@ public class ChatFrame extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton btnConnect;
     private javax.swing.JButton btnPrivateKeySelect;
     public javax.swing.JButton btnSelectFile;
     public javax.swing.JButton btnSend;
     public javax.swing.JButton btnSendFile;
-    public javax.swing.JButton jButton3;
-    public javax.swing.JButton jButton7;
-    public javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     public javax.swing.JList jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     public javax.swing.JTextArea jTextArea1;
-    public javax.swing.JTextField jTextField6;
     public javax.swing.JTextField txtFile;
-    public javax.swing.JButton txtLogin;
     public javax.swing.JTextField txtMsg;
-    public javax.swing.JPasswordField txtPassword;
-    public javax.swing.JTextField txtPort;
     private javax.swing.JTextField txtPrivateKeyPath;
-    public javax.swing.JTextField txtServerAddress;
-    public javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 }

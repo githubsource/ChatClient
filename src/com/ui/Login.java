@@ -5,7 +5,6 @@
  */
 package com.ui;
 
-import com.socket.History;
 import com.socket.Message;
 import com.socket.SocketClient;
 import java.io.File;
@@ -162,10 +161,10 @@ public class Login extends javax.swing.JFrame {
         ChatFrame chatFrame = new ChatFrame();
         
         // init      
-         chatFrame.txtLogin.setEnabled(false); chatFrame.jButton3.setEnabled(false);                        
+        // chatFrame.txtLogin.setEnabled(false); chatFrame.jButton3.setEnabled(false);                        
                         chatFrame.btnSend.setEnabled(true); chatFrame.btnSelectFile.setEnabled(true);
                         chatFrame.jTextArea1.append("[SERVER > Me] : Login Successful\n");
-                        chatFrame.txtUsername.setEnabled(false); chatFrame.txtPassword.setEnabled(false);
+                      //  chatFrame.txtUsername.setEnabled(false); chatFrame.txtPassword.setEnabled(false);
         
         chatFrame.setLocation(this.getLocation());
         chatFrame.setVisible(true);
