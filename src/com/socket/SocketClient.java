@@ -27,6 +27,8 @@ public class SocketClient implements Runnable{
     int portSendFile;
     String ipSendFile;
     
+    public String sessionId;
+    
     public boolean sendMsgEvent = false;
     
     public SocketClient(ChatFrame frame, Login frm) throws IOException{
@@ -153,6 +155,8 @@ public class SocketClient implements Runnable{
                         //
                         ui.setLocation(loginFrm.getLocation());
                         ui.setVisible(true);
+                        ui.txtHello.setText("Hello " + ui.username);
+                        ui.filePrivateKey = loginFrm.filePrivateKey;
                         //this.dispose();
                         loginFrm.setVisible(false);
                         
@@ -163,7 +167,9 @@ public class SocketClient implements Runnable{
                     }
                 }
                 else if(msg.type.equals("test")){
-                 
+                 // sessionId
+                    this.sessionId = msg.content;
+                    System.out.println("Session id " + this.sessionId);
                 }
                 else if(msg.type.equals("newuser")){
                     if(!msg.content.equals(ui.username)){

@@ -73,14 +73,17 @@ public class Download implements Runnable{
 "QC6jXEIMZWvyA9hv2723g6rHqb5ItHfnzIo7jCnUtzknADogAjHRZAtnDHQIvaW6mJGJZOusUMgc\n" +
 "BsVAO9TMJTw=";
                 */   
-            String pr = FileUtil.readFile(ui.filePrivateKey);
-            final byte[] plainBytes = EncryptionUtil.decrypt(combined, CipherUtil.loadPrivateKey(pr));
-            
-            //File cipherFile = bytesToFile(cipherBytes, "/Users/tranngocdien/Documents/java project/file/key/abc_cipher.txt");
+            try {
+                 String pr = FileUtil.readFile(ui.filePrivateKey);
+                final byte[] plainBytes = EncryptionUtil.decrypt(combined, CipherUtil.loadPrivateKey(pr));
 
-            File plainFile = bytesToFile(plainBytes, saveTo);
-            
-            
+                //File cipherFile = bytesToFile(cipherBytes, "/Users/tranngocdien/Documents/java project/file/key/abc_cipher.txt");
+
+                File plainFile = bytesToFile(plainBytes, saveTo);
+            } catch (Exception e) {
+                File plainFile = bytesToFile(combined, saveTo);
+            }
+                
            // Out.flush();
             
             ui.jTextArea1.append("[Application > Me] : Download complete\n");

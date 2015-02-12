@@ -5,10 +5,20 @@
  */
 package com.ui;
 
+import com.socket.CipherUtil;
+import com.socket.FileUtil;
 import com.socket.Message;
 import com.socket.SocketClient;
 import java.io.File;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.Signature;
+import java.security.interfaces.RSAPrivateKey;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,12 +26,14 @@ import javax.swing.JOptionPane;
  * @author tranngocdien
  */
 public class Login extends javax.swing.JFrame {
-            
+        public File filePrivateKey;
+        String filePrivateKeyPath;
     /**
      * Creates new form Login
      */
     public Login() {
         initComponents();
+        txtFilePath.setEditable(false);
     }
 
     /**
@@ -41,6 +53,9 @@ public class Login extends javax.swing.JFrame {
         txtPassword = new javax.swing.JTextField();
         btnLogin = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
+        txtFilePath = new javax.swing.JTextField();
+        btnPrivateFile = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,50 +85,74 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        btnPrivateFile.setText("...");
+        btnPrivateFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrivateFileActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Private key");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(35, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(40, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
+                        .addGap(17, 17, 17)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(27, 27, 27)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtIp, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addComponent(btnPrivateFile, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtFilePath, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(61, 61, 61))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(btnLogin)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnExit)
-                        .addGap(58, 58, 58))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addGap(32, 32, 32)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtIp, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
-                            .addComponent(txtUsername)
-                            .addComponent(txtPassword))
-                        .addGap(62, 62, 62))))
+                        .addGap(85, 85, 85))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtIp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(33, 33, 33)
+                    .addComponent(jLabel1)
+                    .addComponent(txtIp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(37, 37, 37)
+                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addGap(38, 38, 38)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtFilePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnPrivateFile))
+                    .addComponent(jLabel4))
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnLogin)
-                    .addComponent(btnExit))
-                .addContainerGap(41, Short.MAX_VALUE))
+                    .addComponent(btnExit)
+                    .addComponent(btnLogin))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
 
         pack();
@@ -143,10 +182,25 @@ public class Login extends javax.swing.JFrame {
             }
             
             chatFrame.username = txtUsername.getText();
-            chatFrame.password = txtPassword.getText();
-
+            chatFrame.password = txtPassword.getText();          
+            
+            Signature signer;
+            byte[] sign = null;
+            try {
+                String privKey = FileUtil.readFile(filePrivateKey);
+                PrivateKey privSaved = CipherUtil.loadPrivateKey(privKey);
+                signer = Signature.getInstance("SHA1withRSA");
+                signer.initSign((RSAPrivateKey)privSaved);
+                // sign
+                signer.update(chatFrame.client.sessionId.getBytes("UTF-8"));
+                sign = signer.sign();
+            } catch (Exception ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+     
             if(!chatFrame.username.isEmpty() && !chatFrame.password.isEmpty()){
-                chatFrame.client.send(new Message("login", chatFrame.username, chatFrame.password, "SERVER"));
+                chatFrame.client.send(new Message("login", chatFrame.username, chatFrame.password, "SERVER", sign));
+               // chatFrame.client.send(new Message("login", chatFrame.username, chatFrame.password, "SERVER"));
             }
         }
     }//GEN-LAST:event_btnLoginActionPerformed
@@ -155,6 +209,29 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_btnExitActionPerformed
+
+    private void btnPrivateFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrivateFileActionPerformed
+        // TODO add your handling code here:
+         JFileChooser fileChooser = new JFileChooser();
+        fileChooser.showDialog(this, "Select File");
+        filePrivateKey = fileChooser.getSelectedFile();
+
+        if(filePrivateKey != null){
+            if(!filePrivateKey.getName().isEmpty()){
+             //   btnSendFile.setEnabled(true); 
+                String str;
+                filePrivateKeyPath = filePrivateKey.getPath();
+                if(txtFilePath.getText().length() > 30){
+                    String t = filePrivateKey.getPath();
+                    str = t.substring(0, 20) + " [...] " + t.substring(t.length() - 20, t.length());
+                }
+                else{
+                    str = filePrivateKey.getPath();
+                }
+                txtFilePath.setText(str);
+            }
+        }
+    }//GEN-LAST:event_btnPrivateFileActionPerformed
 
     public void initChatFrame() {
         
@@ -214,9 +291,12 @@ public class Login extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnExit;
     public javax.swing.JButton btnLogin;
+    public javax.swing.JButton btnPrivateFile;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    public javax.swing.JTextField txtFilePath;
     public javax.swing.JTextField txtIp;
     public javax.swing.JTextField txtPassword;
     public javax.swing.JTextField txtUsername;
